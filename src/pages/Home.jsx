@@ -6,6 +6,8 @@ import Banner2 from './Banner2';
 import Popularsection from './Popularsection';
 import FeaturedSection from './FeaturedSection';
 import Testiomonial from './Testiomonial';
+import img from '../assets/home/chef-service.jpg'
+import CoverSection from './reusable/CoverSection';
 
 const Home = () => {
     return (
@@ -18,8 +20,11 @@ const Home = () => {
         mainText="ORDER ONLINE" 
       />
             <CatagoriesSwiper></CatagoriesSwiper>
-            <Banner2></Banner2>
-            <Popularsection></Popularsection>
+            <CoverSection
+     backgroundImage={img}
+     title="BISTRO BOSS"
+     description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus, libero accusamus laborum deserunt ratione dolor officiis praesentium! Deserunt magni aperiam dolor eius dolore at, nihil iusto ducimus incidunt quibusdam nemo."
+   />            <Popularsection></Popularsection>
             <FeaturedSection></FeaturedSection>
             <Testiomonial></Testiomonial>
             </div>

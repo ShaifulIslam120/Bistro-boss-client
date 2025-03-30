@@ -12,3 +12,7 @@ const SectionTitle = ({ topText, mainText }) => {
   };
   
   export default SectionTitle;
+  // <SectionTitle
+  //         topText="From 11:00am to 10:00pm" 
+  //         mainText="ORDER ONLINE" 
+  //       />
