@@ -5,6 +5,7 @@ import PopularMenu from '../PopularMenu';
 import DesertCata from '../Catagories/DesertCata';
 import Pizzacata from '../Catagories/Pizzacata';
 import SaladsCata from '../Catagories/SaladsCata';
+import SoupCata from '../Catagories/SoupCata';
 
 const Menu = () => {
     return (
@@ -30,6 +31,7 @@ const Menu = () => {
             <DesertCata></DesertCata>
             <Pizzacata></Pizzacata>
             <SaladsCata></SaladsCata>
+            <SoupCata></SoupCata>
             </div>
         </div>
     );
