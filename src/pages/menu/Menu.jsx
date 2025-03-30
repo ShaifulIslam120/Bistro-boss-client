@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet-async';
 import menuBanner from '../../assets/menu/banner3.jpg';
 import PopularMenu from '../PopularMenu';
 import DesertCata from '../Catagories/DesertCata';
+import Pizzacata from '../Catagories/Pizzacata';
+import SaladsCata from '../Catagories/SaladsCata';
 
 const Menu = () => {
     return (
@@ -26,6 +28,8 @@ const Menu = () => {
             <div className='max-w-screen-xl mx-auto'>
             <PopularMenu></PopularMenu>
             <DesertCata></DesertCata>
+            <Pizzacata></Pizzacata>
+            <SaladsCata></SaladsCata>
             </div>
         </div>
     );
