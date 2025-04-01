@@ -12,7 +12,7 @@ const Testimonial = () => {
     useEffect(() => {
         const fetchTestimonials = async () => {
             try {
-                const response = await fetch('rating.json');
+                const response = await fetch('http://localhost:4000/reviews');
                 const data = await response.json();
                 setTestimonialData(data);
                 setLoading(false);
