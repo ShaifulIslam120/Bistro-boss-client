@@ -43,7 +43,7 @@ const Navbar = () => {
             <Link to='Contact' href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">CONTACT US</Link>
             <a href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">DASHBOARD</a>
             <Link to='/menu' href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">OUR MENU</Link>
-            <a href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">OUR SHOP</a>
+            <Link to='/shop' href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">OUR SHOP</Link>
             
             {/* Cart Icon */}
             <div className="relative">

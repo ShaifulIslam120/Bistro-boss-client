@@ -5,6 +5,7 @@ import {
 import Main from "../Layouts/Main";
 import Home from "../pages/Home";
 import Menu from "../pages/menu/Menu";
+import OurShop from "../pages/Shop/OurShop";
   const router = createBrowserRouter([
     {
       path: "/",
@@ -16,6 +17,9 @@ import Menu from "../pages/menu/Menu";
     {
       path:'/menu',
       element:<Menu></Menu>
+    },{
+      path:'/shop',
+      element:<OurShop></OurShop>
     }]
     },
   ]);
