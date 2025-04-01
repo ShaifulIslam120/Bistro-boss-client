@@ -7,6 +7,8 @@ import Home from "../pages/Home";
 import Menu from "../pages/menu/Menu";
 import OurShop from "../pages/Shop/OurShop";
 import ContactUs from "../pages/Contact/ContactUs";
+import Login from "../Authentication/Login";
+import Register from "../Authentication/Register";
   const router = createBrowserRouter([
     {
       path: "/",
@@ -24,6 +26,12 @@ import ContactUs from "../pages/Contact/ContactUs";
     },{
       path:'/contact',
       element:<ContactUs></ContactUs>
+    },{
+      path:'/login',
+      element:<Login></Login>
+    },{
+      path:'/register',
+      element:<Register></Register>
     }]
     },
   ]);

@@ -3,7 +3,7 @@ import loginBg from '../assets/others/authentication.png';
 import loginImg from '../assets/others/authentication2.png';
 import { Link } from 'react-router-dom';
 
-const Login = () => {
+const Register = () => {
     return (
         <div 
             className="min-h-screen flex items-center justify-center bg-cover bg-center py-8 px-4 sm:px-6 lg:px-8 bg-opacity-90"
@@ -19,8 +19,17 @@ const Login = () => {
                 </div>
 
                 <div className="w-full lg:w-1/2 p-6 md:p-8">
-                    <h2 className="text-2xl font-bold text-center mb-6 drop-shadow-sm">Login</h2>
+                    <h2 className="text-2xl font-bold text-center mb-6 drop-shadow-sm">Sign Up</h2>
                     <form className="space-y-4">
+                        <div>
+                            <label className="block text-gray-700 text-sm font-medium mb-1">Name</label>
+                            <input
+                                type="text"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#D1A054] shadow-sm"
+                                placeholder="Type here"
+                            />
+                        </div>
+
                         <div>
                             <label className="block text-gray-700 text-sm font-medium mb-1">Email</label>
                             <input
@@ -39,36 +48,18 @@ const Login = () => {
                             />
                         </div>
 
-                        <div>
-                            <label className="block text-gray-700 text-sm font-medium mb-1">Captcha</label>
-                            <div className="bg-gray-100 p-2 rounded-md mb-2 text-gray-600 shadow-inner">
-                                UAgluo
-                            </div>
-                            <input
-                                type="text"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#D1A054] shadow-sm"
-                                placeholder="Type here"
-                            />
-                            <button 
-                                type="button" 
-                                className="text-blue-600 text-sm mt-1 hover:underline hover:text-blue-800 transition-colors duration-300"
-                            >
-                                Reload Captcha
-                            </button>
-                        </div>
-
                         <button
                             type="submit"
                             className="w-full bg-[#D1A054] text-white py-2.5 rounded-md hover:bg-[#b88d47] transition-all duration-300 shadow-md hover:shadow-lg active:shadow-sm transform hover:-translate-y-1 active:translate-y-0"
                         >
-                            Sign In
+                            Sign Up
                         </button>
 
                         <div className="text-center">
                             <p className="text-[#D1A054] mb-3 text-sm">
-                                New here? <Link to='/register' href="#" className="hover:underline font-medium">Create a New Account</Link>
+                                Already registered? <Link to="/login" className="hover:underline font-medium">Go to log in</Link>
                             </p>
-                            <p className="text-gray-600 text-sm">Or sign in with</p>
+                            <p className="text-gray-600 text-sm">Or sign up with</p>
                             <div className="flex justify-center space-x-3 mt-3">
                                 <button className="p-2 border border-gray-300 rounded-full hover:bg-gray-50 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
                                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -94,4 +85,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;
