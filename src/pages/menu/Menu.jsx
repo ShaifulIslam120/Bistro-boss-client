@@ -13,19 +13,19 @@ const Menu = () => {
             <Helmet>
                 <title>Bistro Boss|Menu</title>
             </Helmet>
-            <div className="relative h-[400px] bg-cover bg-center bg-fixed" style={{
-                backgroundImage: `url(${menuBanner})`
-            }}>
-                <div 
-                    className="absolute inset-20 flex flex-col items-center justify-center text-white"
-                    style={{
-                        background: 'linear-gradient(rgba(21, 21, 21, 0.7), rgba(21, 21, 21, 0.7))'
-                    }}
-                >
-                    <h1 className="text-5xl font-serif mb-4">OUR MENU</h1>
-                    <p className="text-xl tracking-wider">WOULD YOU LIKE TO TRY A DISH?</p>
-                </div>
-            </div>
+            <div className="relative h-[200px] sm:h-[300px] md:h-[400px] bg-cover bg-center bg-fixed" style={{
+    backgroundImage: `url(${menuBanner})`
+}}>
+    <div 
+        className="absolute inset-4 sm:inset-10 md:inset-20 flex flex-col items-center justify-center text-white"
+        style={{
+            background: 'linear-gradient(rgba(21, 21, 21, 0.7), rgba(21, 21, 21, 0.7))'
+        }}
+    >
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-2 sm:mb-4 text-center">OUR MENU</h1>
+        <p className="text-sm sm:text-lg md:text-xl tracking-wider text-center px-4">WOULD YOU LIKE TO TRY A DISH?</p>
+    </div>
+</div>
             <div className='max-w-screen-xl mx-auto'>
             <PopularMenu></PopularMenu>
             <DesertCata></DesertCata>

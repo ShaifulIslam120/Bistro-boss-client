@@ -17,7 +17,6 @@ const Navbar = () => {
 
     window.addEventListener('scroll', handleScroll);
 
-    // Cleanup function to remove event listener
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -39,11 +38,11 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to ='/' href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">HOME</Link>
-            <Link to='/contact' href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">CONTACT US</Link>
+            <Link to='/' className="text-white hover:text-yellow-400 transition-colors duration-300">HOME</Link>
+            <Link to='/contact' className="text-white hover:text-yellow-400 transition-colors duration-300">CONTACT US</Link>
             <a href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">DASHBOARD</a>
-            <Link to='/menu' href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">OUR MENU</Link>
-            <Link to='/shop' href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">OUR SHOP</Link>
+            <Link to='/menu' className="text-white hover:text-yellow-400 transition-colors duration-300">OUR MENU</Link>
+            <Link to='/shop' className="text-white hover:text-yellow-400 transition-colors duration-300">OUR SHOP</Link>
             
             {/* Cart Icon */}
             <div className="relative">
@@ -55,12 +54,12 @@ const Navbar = () => {
               </svg>
             </div>
 
-            {/* Sign Out Button */}
+            {/* Sign In Button */}
             <button className="flex items-center text-white hover:text-yellow-400 transition-colors duration-300">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-              <span className="ml-2">SIGN OUT</span>
+              <Link to='/login' className="ml-2">SIGN IN</Link>
             </button>
           </div>
 
@@ -89,16 +88,16 @@ const Navbar = () => {
         } md:hidden absolute top-16 left-0 w-full bg-black/90 backdrop-blur-sm transition-all duration-300 ease-in-out`}
       >
         <div className="px-4 pt-2 pb-3 space-y-3">
-          <a href="#" className="block text-white hover:text-yellow-400 transition-colors duration-300">HOME</a>
-          <a href="#" className="block text-white hover:text-yellow-400 transition-colors duration-300">CONTACT US</a>
+          <Link to='/' className="block text-white hover:text-yellow-400 transition-colors duration-300">HOME</Link>
+          <Link to='/contact' className="block text-white hover:text-yellow-400 transition-colors duration-300">CONTACT US</Link>
           <a href="#" className="block text-white hover:text-yellow-400 transition-colors duration-300">DASHBOARD</a>
-          <a href="#" className="block text-white hover:text-yellow-400 transition-colors duration-300">OUR MENU</a>
-          <a href="#" className="block text-white hover:text-yellow-400 transition-colors duration-300">OUR SHOP</a>
+          <Link to='/menu' className="block text-white hover:text-yellow-400 transition-colors duration-300">OUR MENU</Link>
+          <Link to='/shop' className="block text-white hover:text-yellow-400 transition-colors duration-300">OUR SHOP</Link>
           <button className="flex items-center text-white hover:text-yellow-400 transition-colors duration-300">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
-            <span className="ml-2">SIGN OUT</span>
+            <span className="ml-2">SIGN IN</span>
           </button>
         </div>
       </div>
