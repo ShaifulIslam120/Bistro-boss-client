@@ -40,7 +40,7 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <Link to ='/' href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">HOME</Link>
-            <Link to='Contact' href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">CONTACT US</Link>
+            <Link to='/contact' href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">CONTACT US</Link>
             <a href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">DASHBOARD</a>
             <Link to='/menu' href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">OUR MENU</Link>
             <Link to='/shop' href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">OUR SHOP</Link>

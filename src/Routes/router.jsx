@@ -6,6 +6,7 @@ import Main from "../Layouts/Main";
 import Home from "../pages/Home";
 import Menu from "../pages/menu/Menu";
 import OurShop from "../pages/Shop/OurShop";
+import ContactUs from "../pages/Contact/ContactUs";
   const router = createBrowserRouter([
     {
       path: "/",
@@ -20,6 +21,9 @@ import OurShop from "../pages/Shop/OurShop";
     },{
       path:'/shop',
       element:<OurShop></OurShop>
+    },{
+      path:'/contact',
+      element:<ContactUs></ContactUs>
     }]
     },
   ]);
