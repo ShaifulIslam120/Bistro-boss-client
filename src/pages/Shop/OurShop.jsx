@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import ourshop from '../../assets/shop/banner2.jpg'
+import { useLocation } from 'react-router-dom';
+import ourshop from '../../assets/shop/banner2.jpg';
 import Tabmenu from './Tabmenu';
 import UseMenu from '../hooks/UseMenu';
 
 const OurShop = () => {
     const [menu] = UseMenu();
-    const [menuItems, setMenuItems] = useState([]);
+    const location = useLocation();
+    const selectedCategory = location.state?.category || 'salad';
 
     useEffect(() => {
-        setMenuItems(menu);
-    }, [menu]);
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div>
@@ -20,9 +22,8 @@ const OurShop = () => {
             <div className="relative h-[200px] sm:h-[300px] md:h-[400px] bg-cover bg-center bg-fixed" style={{
                 backgroundImage: `url(${ourshop})`
             }}>
-                
                 <div 
-                    className=" absolute inset-0 sm:inset-10 md:inset-20 flex flex-col items-center justify-center text-white"
+                    className="absolute inset-0 sm:inset-10 md:inset-20 flex flex-col items-center justify-center text-white"
                     style={{
                         background: 'linear-gradient(rgba(21, 21, 21, 0.7), rgba(21, 21, 21, 0.7))'
                     }}
@@ -33,7 +34,9 @@ const OurShop = () => {
                     </p>
                 </div>
             </div>
-            <Tabmenu items={menuItems} />
+            <div className="max-w-screen-xl mx-auto px-4 py-8">
+                <Tabmenu items={menu} defaultCategory={selectedCategory} />
+            </div>
         </div>
     );
 };

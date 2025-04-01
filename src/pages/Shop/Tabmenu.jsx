@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import FoodCard from './FoodCard';
 
-const Tabmenu = ({ items = [] }) => {
-    const [activeTab, setActiveTab] = useState('salad');
+const Tabmenu = ({ items = [], defaultCategory = 'salad' }) => {
+    const [activeTab, setActiveTab] = useState(defaultCategory);
 
     const categories = ['salad', 'pizza', 'soup', 'dessert', 'drinks'];
     
@@ -11,7 +11,7 @@ const Tabmenu = ({ items = [] }) => {
     );
 
     return (
-        <div className="my-8 max-w-screen-xl mx-auto">
+        <div className="my-8">
             <div className="w-full overflow-x-auto">
                 <div className="flex flex-nowrap md:flex-wrap justify-start md:justify-center min-w-max md:min-w-0 px-4 md:px-0 space-x-2 sm:space-x-4 md:space-x-8 mb-8">
                     {categories.map(category => (
@@ -30,7 +30,7 @@ const Tabmenu = ({ items = [] }) => {
                 </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredItems.map(item => (
                     <FoodCard 
                         key={item._id}

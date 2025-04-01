@@ -4,7 +4,7 @@ const FoodCard = ({ item }) => {
     const { name, image, price, recipe } = item;
 
     return (
-        <div className="flex justify-center items-center ">
+        <div className="flex justify-center items-center">
             <div className="w-full max-w-[424px] bg-white rounded-lg overflow-hidden shadow-md">
                 <div className="relative">
                     <img 
