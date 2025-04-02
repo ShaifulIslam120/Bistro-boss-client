@@ -3,8 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../Authentication/provider/useAuth';
+import { useCart } from '../Cart/CartProvider';
 
 const Navbar = () => {
+  const { cartItems } = useCart();
+
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { user, logOut } = useAuth();
@@ -60,19 +63,19 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             <Link to='/' className="text-white hover:text-yellow-400 transition-colors duration-300">HOME</Link>
             <Link to='/contact' className="text-white hover:text-yellow-400 transition-colors duration-300">CONTACT US</Link>
-            <a href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">DASHBOARD</a>
+            <Link to='/Dashbord' href="#" className="text-white hover:text-yellow-400 transition-colors duration-300">DASHBOARD</Link>
             <Link to='/menu' className="text-white hover:text-yellow-400 transition-colors duration-300">OUR MENU</Link>
             <Link to='/shop' className="text-white hover:text-yellow-400 transition-colors duration-300">OUR SHOP</Link>
             
             {/* Cart Icon */}
-            <div className="relative">
-              <span className="absolute -top-2 -right-2 bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                0
-              </span>
-              <svg className="w-6 h-6 text-white hover:text-yellow-400 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </div>
+            <Link to="/cart" className="relative">
+            <span className="absolute -top-2 -right-2 bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+        {cartItems.length}
+    </span>
+    <svg className="w-6 h-6 text-white hover:text-yellow-400 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+    </svg>
+</Link>
 
             {/* Sign In/Out Button */}
             {user ? (

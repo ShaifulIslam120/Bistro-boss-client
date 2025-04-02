@@ -1,7 +1,57 @@
 import React from 'react';
+import Swal from 'sweetalert2';
+import { useCart } from '../Cart/CartProvider';
+import { useAuth } from '../../Authentication/provider/useAuth';
+import useAxiosSecure from '../../Hooks/useAxiossecure';
 
 const FoodCard = ({ item }) => {
-    const { name, image, price, recipe } = item;
+    const { name, image, price, recipe, _id } = item;
+    const { addToCart } = useCart();
+    const { addToCart: addToCartDB } = useAxiosSecure();
+    const { user } = useAuth();
+
+    const handleAddToCart = async () => {
+        if (!user) {
+            Swal.fire({
+                title: "Please login",
+                text: "You need to login to add items to cart",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Login now"
+            });
+            return;
+        }
+
+        try {
+            const cartItem = {
+                menuId: _id,
+                email: user.email,
+                name,
+                image,
+                price,
+                quantity: 1
+            };
+
+            await addToCartDB(cartItem);
+            addToCart(item);
+            
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Added to cart!",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Failed to add to cart!"
+            });
+        }
+    };
 
     return (
         <div className="flex justify-center items-center">
@@ -19,7 +69,10 @@ const FoodCard = ({ item }) => {
                 <div className="p-4 text-center">
                     <h3 className="text-xl font-semibold mb-2 hover:text-[#BB8506] transition-colors duration-300">{name}</h3>
                     <p className="text-gray-600 text-sm mb-4">{recipe}</p>
-                    <button className="bg-[#E8E8E8] hover:bg-[#1F2937] text-[#BB8506] hover:text-[#BB8506] font-medium py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95">
+                    <button 
+                        onClick={handleAddToCart}
+                        className="bg-[#E8E8E8] hover:bg-[#1F2937] text-[#BB8506] hover:text-[#BB8506] font-medium py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95"
+                    >
                         ADD TO CART
                     </button>
                 </div>
