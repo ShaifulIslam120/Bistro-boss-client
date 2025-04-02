@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
-// import { FaTrashAlt, FaUsers } from 'react-icons/fa';
+import { FaTrash, FaUserShield } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../Hooks/useAxiossecure';
-import { FaTrash, FaUserShield, FaUserAlt } from 'react-icons/fa';
+import { useAuth } from '../Authentication/provider/useAuth';
+import SectionTitle from '../pages/reusable/SectionTitle';
+
 const AllUsers = () => {
     const [users, setUsers] = useState([]);
-    const { axiosSecure } = useAxiosSecure();
+    const axiosSecure = useAxiosSecure();
+    const { user: currentUser } = useAuth();
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -13,12 +16,19 @@ const AllUsers = () => {
             setUsers(response.data);
         };
         fetchUsers();
-    }, []);
-
-    
+    }, [axiosSecure]);
 
     const handleDeleteUser = async (user) => {
         try {
+            if (user.email === currentUser?.email) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Not Allowed',
+                    text: 'You cannot delete your own account!'
+                });
+                return;
+            }
+
             const result = await Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -47,6 +57,15 @@ const AllUsers = () => {
 
     const handleToggleRole = async (user) => {
         try {
+            if (user.email === currentUser?.email && user.role === 'admin') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Not Allowed',
+                    text: 'You cannot remove your own admin role!'
+                });
+                return;
+            }
+
             const newRole = user.role === 'admin' ? 'user' : 'admin';
             const response = await axiosSecure.patch(`/users/toggle-role/${user._id}`, {
                 role: newRole
@@ -74,36 +93,47 @@ const AllUsers = () => {
     };
 
     return (
-        <div className="w-full px-4">
-            <h2 className="text-3xl font-semibold my-4">Total Users: {users.length}</h2>
+        <div className="w-full p-8">
+            <SectionTitle
+          topText="How many??" 
+          mainText="MANAGE ALL USERS" 
+        />
+            <h2 className="text-2xl font-bold mb-6">TOTAL USERS: {users.length}</h2>
             <div className="overflow-x-auto">
-                <table className="table table-zebra w-full">
-                    {/* ... existing thead ... */}
+                <table className="w-full border-collapse">
+                    <thead>
+                        <tr className="bg-[#D1A054] text-white">
+                            <th className="p-4 text-left">#</th>
+                            <th className="p-4 text-left">NAME</th>
+                            <th className="p-4 text-left">EMAIL</th>
+                            <th className="p-4 text-left">ROLE</th>
+                            <th className="p-4 text-left">ACTION</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         {users.map((user, index) => (
-                            <tr key={user._id}>
-                                <td>{index + 1}</td>
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
-                                <td>
+                            <tr key={user._id} className="border-b border-gray-200">
+                                <td className="p-4">{index + 1}</td>
+                                <td className="p-4">{user.name}</td>
+                                <td className="p-4">{user.email}</td>
+                                <td className="p-4 flex items-center gap-2">
                                     <button 
                                         onClick={() => handleToggleRole(user)}
-                                        className={`btn btn-ghost ${user.role === 'admin' ? 'bg-green-600' : 'bg-[#D1A054]'} text-white hover:bg-opacity-80 transition-all duration-300 transform hover:scale-105`}
-                                        title={user.role === 'admin' ? 'Make User' : 'Make Admin'}
+                                        className={`p-2 rounded ${user.role === 'admin' ? 'bg-green-600' : 'bg-[#D1A054]'}`}
                                     >
-                                        {user.role === 'admin' ? 
-                                            <FaUserAlt className="text-xl" /> : 
-                                            <FaUserShield className="text-xl" />
-                                        }
+                                        <FaUserShield className="text-white text-xl" />
                                     </button>
+                                    <span className={`font-medium ${user.role === 'admin' ? 'text-green-600' : 'text-[#D1A054]'}`}>
+                                        {user.role === 'admin' ? 'Admin' : 'User'}
+                                    </span>
                                 </td>
-                                <td>
-                                                        <button 
-                            onClick={() => handleDeleteUser(user)}
-                            className="btn btn-ghost bg-red-600 text-white hover:bg-red-700 transition-all duration-300 transform hover:scale-105"
-                        >
-                            <FaTrash className="text-xl" />
-                        </button>
+                                <td className="p-4">
+                                    <button 
+                                        onClick={() => handleDeleteUser(user)}
+                                        className="p-2 rounded bg-red-600"
+                                    >
+                                        <FaTrash className="text-white text-xl" />
+                                    </button>
                                 </td>
                             </tr>
                         ))}

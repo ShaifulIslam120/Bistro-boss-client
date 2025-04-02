@@ -4,24 +4,27 @@ import { FaHome, FaShoppingCart, FaList, FaBook, FaUsers, FaUtensils, FaShopify,
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../Authentication/provider/useAuth';
 import axios from 'axios';
+import useAxiosSecure from '../Hooks/useAxiossecure';
 
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const { user } = useAuth();
+    const axiosSecure = useAxiosSecure(); 
 
     
     useEffect(() => {
         if(user?.email) {
-            axios.get(`http://localhost:4000/users/admin/${user.email}`)
+            axiosSecure.get(`/users/admin/${user.email}`)
                 .then(res => {
+                    console.log('is admin response', res.data);
                     setIsAdmin(res.data.isAdmin);
                 })
                 .catch(error => {
-                    console.error('Error checking admin status:', error);
+                    console.error('Admin check error:', error);
                 });
         }
-    }, [user]);
+    }, [user, axiosSecure]);
     const adminMenuItems = [
         { to: "/dashboard/admin-home", icon: <FaHome />, text: "Admin Home" },
         { to: "/dashboard/add-items", icon: <FaUtensils />, text: "Add Items" },

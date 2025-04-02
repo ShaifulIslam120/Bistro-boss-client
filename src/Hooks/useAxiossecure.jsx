@@ -1,46 +1,35 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Authentication/provider/useAuth";
 
-export const axiosSecure = axios.create({
+const axiosSecure = axios.create({
     baseURL: 'http://localhost:4000'
 });
 
 const useAxiosSecure = () => {
-    const addToCart = async (cartItem) => {
-        try {
-            const response = await axiosSecure.post('/carts', cartItem);
-            return response.data;
-        } catch (error) {
-            console.error('Error adding to cart:', error);
-            throw error;
-        }
-    };
+    const navigate = useNavigate();
+    const { logOut } = useAuth();
 
-    const getCartItems = async (email) => {
-        try {
-            const response = await axiosSecure.get(`/carts?email=${email}`);
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching cart items:', error);
-            throw error;
-        }
-    };
+    axiosSecure.interceptors.request.use(function (config) {
+        const token = localStorage.getItem('access-token');
+        config.headers.authorization = `Bearer ${token}`;
+        return config;
+    }, function (error) {
+        return Promise.reject(error);
+    });
 
-    const removeCartItem = async (id) => {
-        try {
-            const response = await axiosSecure.delete(`/carts/${id}`);
-            return response.data;
-        } catch (error) {
-            console.error('Error removing cart item:', error);
-            throw error;
+    axiosSecure.interceptors.response.use(function (response) {
+        return response;
+    }, async function (error) {
+        const status = error?.response?.status;
+        if (status === 401 || status === 403) {
+            await logOut();
+            navigate('/login');
         }
-    };
+        return Promise.reject(error);
+    });
 
-    return {
-        axiosSecure,
-        addToCart,
-        getCartItems,
-        removeCartItem
-    };
+    return axiosSecure;
 };
 
 export default useAxiosSecure;
