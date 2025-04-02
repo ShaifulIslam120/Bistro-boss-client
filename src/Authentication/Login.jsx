@@ -7,13 +7,14 @@ import Swal from 'sweetalert2';
 import { useAuth } from './provider/useAuth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './Firebase/firebase.config';
+import { FaGoogle } from 'react-icons/fa';
+import axios from 'axios';
 
 const Login = () => {
     const navigate = useNavigate();
-    const { signIn } = useAuth();
-
-
+    const { signIn, googleSignIn } = useAuth();
     const [disabled, setDisabled] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -26,8 +27,21 @@ const Login = () => {
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
-
-    // ... other imports and code remain the same ...
+    const saveUser = async (user) => {
+        const userInfo = {
+            name: user.displayName || user.email.split('@')[0], // Use email username if displayName is null
+            email: user.email,
+            photoURL: user.photoURL || null,
+            createdAt: new Date()
+        };
+        
+        try {
+            const response = await axios.post('http://localhost:4000/users', userInfo);
+            return response.data;
+        } catch (error) {
+            console.error('Error saving user:', error);
+        }
+    };
 
     const handleValidateCaptcha = (e) => {
         const user_captcha_value = e.target.value;
@@ -40,14 +54,44 @@ const Login = () => {
         }
     };
 
-const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!disabled) {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!disabled) {
+            setLoading(true);
+            try {
+                const { email, password } = formData;
+                const result = await signInWithEmailAndPassword(auth, email, password);
+                
+                if (result.user) {
+                    await saveUser(result.user);
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Login successful!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    navigate('/');
+                }
+            } catch (error) {
+                console.error(error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: error.message
+                });
+            } finally {
+                setLoading(false);
+            }
+        }
+    };
+
+    const handleGoogleLogin = async () => {
         try {
-            const { email, password } = formData;
-            const result = await signInWithEmailAndPassword(auth, email, password);
-            
+            setLoading(true);
+            const result = await googleSignIn();
             if (result.user) {
+                await saveUser(result.user);
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -58,31 +102,32 @@ const handleSubmit = async (e) => {
                 navigate('/');
             }
         } catch (error) {
-            console.error(error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
                 text: error.message
             });
+        } finally {
+            setLoading(false);
         }
-    }
-};
+    };
 
     return (
         <div 
-            className="min-h-screen flex items-center justify-center bg-cover bg-center py-8 px-4 sm:px-6 lg:px-8 bg-opacity-90"
+            className="min-h-screen flex items-center justify-center bg-cover bg-center py-4 md:py-8 px-2 md:px-6 lg:px-8"
             style={{ backgroundImage: `url(${loginBg})` }}
         >
-<div className="max-w-4xl w-full bg-white/80 backdrop-blur-sm rounded-lg shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] flex overflow-hidden">                <div className="hidden lg:block w-1/2 p-8">
+            <div className="max-w-4xl w-full bg-white/80 backdrop-blur-sm rounded-lg shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] flex overflow-hidden">
+                <div className="hidden lg:block w-1/2 p-8">
                     <img 
                         src={loginImg} 
                         alt="Restaurant illustration" 
-                        className="w-full h-full object-cover drop-shadow-2xl"
+                        className="w-full h-full object-cover drop-shadow-2xl animate-fadeIn"
                     />
                 </div>
 
-                <div className="w-full lg:w-1/2 p-6 md:p-8">
-                    <h2 className="text-2xl font-bold text-center mb-6 drop-shadow-sm">Login</h2>
+                <div className="w-full lg:w-1/2 p-4 md:p-6 lg:p-8">
+                    <h2 className="text-xl md:text-2xl font-bold text-center mb-4 md:mb-6">Login</h2>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
                             <label className="block text-gray-700 text-sm font-medium mb-1">Email</label>
@@ -110,50 +155,49 @@ const handleSubmit = async (e) => {
                             />
                         </div>
 
-                        <div>
+                        <div className="space-y-2">
                             <label className="block text-gray-700 text-sm font-medium mb-1">Captcha</label>
                             <LoadCanvasTemplate />
                             <input
                                 type="text"
                                 onChange={handleValidateCaptcha}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#D1A054] shadow-sm mt-2"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#D1A054] shadow-sm"
                                 placeholder="Type the captcha above"
-                                required
                             />
                         </div>
 
                         <button
                             type="submit"
-                            disabled={disabled}
+                            disabled={disabled || loading}
                             className={`w-full py-2.5 rounded-md transition-all duration-300 shadow-md hover:shadow-lg active:shadow-sm transform hover:-translate-y-1 active:translate-y-0 
-                                ${disabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#D1A054] hover:bg-[#b88d47] text-white'}`}
+                                ${disabled || loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#D1A054] hover:bg-[#b88d47] text-white'}`}
                         >
-                            Sign In
+                            {loading ? 'Signing in...' : 'Sign In'}
                         </button>
 
-                        <div className="text-center">
-                            <p className="text-[#D1A054] mb-3 text-sm">
+                        <div className="text-center text-sm">
+                            <p className="text-[#D1A054]">
                                 New here? <Link to="/register" className="hover:underline font-medium">Create a New Account</Link>
                             </p>
-                            <p className="text-gray-600 text-sm">Or sign in with</p>
-                            <div className="flex justify-center space-x-3 mt-3">
-                                <button type="button" className="p-2 border border-gray-300 rounded-full hover:bg-gray-50 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
-                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                                    </svg>
-                                </button>
-                                <button type="button" className="p-2 border border-gray-300 rounded-full hover:bg-gray-50 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
-                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 0C5.372 0 0 5.373 0 12s5.372 12 12 12c6.627 0 12-5.373 12-12S18.627 0 12 0zm.14 19.018c-3.868 0-7-3.14-7-7.018c0-3.878 3.132-7.018 7-7.018c1.89 0 3.47.697 4.682 1.829l-1.974 1.978c-.517-.557-1.429-1.205-2.708-1.205c-2.31 0-4.187 1.933-4.187 4.416c0 2.483 1.877 4.416 4.187 4.416c2.704 0 3.683-1.938 3.828-2.937h-3.828v-2.616h6.457c.063.329.097.661.097 1.085c0 3.975-2.663 6.07-6.554 6.07z"/>
-                                    </svg>
-                                </button>
-                                <button type="button" className="p-2 border border-gray-300 rounded-full hover:bg-gray-50 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
-                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385c.6.105.825-.255.825-.57c0-.285-.015-1.23-.015-2.235c-3.015.555-3.795-.735-4.035-1.41c-.135-.345-.72-1.41-1.23-1.695c-.42-.225-1.02-.78-.015-.795c.945-.015 1.62.87 1.845 1.23c1.08 1.815 2.805 1.305 3.495.99c.105-.78.42-1.305.765-1.605c-2.67-.3-5.46-1.335-5.46-5.925c0-1.305.465-2.385 1.23-3.225c-.12-.3-.54-1.53.12-3.18c0 0 1.005-.315 3.3 1.23c.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23c.66 1.65.24 2.88.12 3.18c.765.84 1.23 1.905 1.23 3.225c0 4.605-2.805 5.625-5.475 5.925c.435.375.81 1.095.81 2.22c0 1.605-.015 2.895-.015 3.3c0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                                    </svg>
-                                </button>
+                        </div>
+
+                        <div className="relative my-4">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-white text-gray-500">Or continue with</span>
                             </div>
                         </div>
+
+                        <button
+                            type="button"
+                            onClick={handleGoogleLogin}
+                            className="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors duration-300"
+                        >
+                            <FaGoogle className="text-[#D1A054]" />
+                            <span>Sign in with Google</span>
+                        </button>
                     </form>
                 </div>
             </div>

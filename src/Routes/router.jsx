@@ -12,6 +12,7 @@ import Register from "../Authentication/Register";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import Cart from "../pages/Cart/Cart";
 import Dashboard from "../Layouts/Dashbord";
+import AllUsers from "../Dashboard/AllUsers";
   const router = createBrowserRouter([
     {
       path: "/",
@@ -47,7 +48,25 @@ import Dashboard from "../Layouts/Dashbord";
         path:'dashboard/home',
         element:<Home></Home>
 
-      }]
+      },{
+        path:'dashboard/menu',
+        element:<Menu></Menu>
+      },
+    {
+      path:'dashboard/shop',
+      element:<OurShop></OurShop>,
+    },
+    {
+      path:'dashboard/contact',
+      element:<ContactUs></ContactUs>,
+    },
+  {
+    path:'dashboard/my-cart',
+    element:<Cart></Cart>
+  },{
+    path:'dashboard/all-users',
+    element:<AllUsers></AllUsers>
+  }]
     }
   ]);
   export default router;

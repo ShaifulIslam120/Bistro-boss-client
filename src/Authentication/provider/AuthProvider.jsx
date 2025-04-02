@@ -19,9 +19,17 @@ const AuthProvider = ({ children }) => {
         return signInWithEmailAndPassword(auth, email, password);
     }
 
-    const googleSignIn = () => {
+    const googleSignIn = async () => {
         setLoading(true);
-        return signInWithPopup(auth, googleProvider);
+        try {
+            googleProvider.setCustomParameters({
+                prompt: 'select_account'
+            });
+            return await signInWithPopup(auth, googleProvider);
+        } catch (error) {
+            setLoading(false);
+            throw error;
+        }
     }
 
     const logOut = () => {

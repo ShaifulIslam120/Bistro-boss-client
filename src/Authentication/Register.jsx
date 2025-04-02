@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 const Register = () => {
     const { createUser, googleSignIn } = useAuth();
     const navigate = useNavigate();
-    
+    const [loading, setLoading] = useState(false); 
     const [disabled, setDisabled] = useState(true);
     const [formData, setFormData] = useState({
         name: '',
@@ -64,24 +64,28 @@ const Register = () => {
 
     const handleGoogleSignIn = async () => {
         try {
+            setLoading(true); // Add loading state if not already present
             const result = await googleSignIn();
-            if (result.user) {
+            if (result?.user) {
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: "Login successful!",
+                    title: "Registration successful!",
                     showConfirmButton: false,
                     timer: 1500
                 });
                 navigate('/');
             }
         } catch (error) {
-            console.error(error);
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: error.message
-            });
+            if (error.code !== 'auth/cancelled-popup-request') {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: error.message
+                });
+            }
+        } finally {
+            setLoading(false); // Reset loading state
         }
     };
 
