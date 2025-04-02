@@ -1,10 +1,14 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import Swal from 'sweetalert2';
+import { useAuth } from '../../Authentication/provider/useAuth';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { user, logOut } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +25,22 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Logged out successfully!",
+        showConfirmButton: false,
+        timer: 1500
+      });
+      navigate('/login');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${
@@ -54,13 +74,25 @@ const Navbar = () => {
               </svg>
             </div>
 
-            {/* Sign In Button */}
-            <button className="flex items-center text-white hover:text-yellow-400 transition-colors duration-300">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              <Link to='/login' className="ml-2">SIGN IN</Link>
-            </button>
+            {/* Sign In/Out Button */}
+            {user ? (
+              <button 
+                onClick={handleLogout}
+                className="flex items-center text-white hover:text-yellow-400 transition-colors duration-300"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                <span className="ml-2">SIGN OUT</span>
+              </button>
+            ) : (
+              <button className="flex items-center text-white hover:text-yellow-400 transition-colors duration-300">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <Link to='/login' className="ml-2">SIGN IN</Link>
+              </button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -93,12 +125,25 @@ const Navbar = () => {
           <a href="#" className="block text-white hover:text-yellow-400 transition-colors duration-300">DASHBOARD</a>
           <Link to='/menu' className="block text-white hover:text-yellow-400 transition-colors duration-300">OUR MENU</Link>
           <Link to='/shop' className="block text-white hover:text-yellow-400 transition-colors duration-300">OUR SHOP</Link>
-          <button className="flex items-center text-white hover:text-yellow-400 transition-colors duration-300">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            <span className="ml-2">SIGN IN</span>
-          </button>
+          
+          {user ? (
+            <button 
+              onClick={handleLogout}
+              className="flex items-center text-white hover:text-yellow-400 transition-colors duration-300"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              <span className="ml-2">SIGN OUT</span>
+            </button>
+          ) : (
+            <Link to='/login' className="flex items-center text-white hover:text-yellow-400 transition-colors duration-300">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              <span className="ml-2">SIGN IN</span>
+            </Link>
+          )}
         </div>
       </div>
     </nav>

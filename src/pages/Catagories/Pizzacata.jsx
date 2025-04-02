@@ -81,7 +81,7 @@ const Pizzacata = () => {
                 <div className="flex justify-center mt-12">
                     <button 
                         onClick={handleOrderClick}
-                        className="uppercase border-b-4 border-black hover:border-[#BB8506] text-black hover:text-[#BB8506] transition-colors duration-300 px-8 py-4 rounded-lg font-medium"
+                        className="uppercase border-b-4  border-black hover:border-[#BB8506] text-black hover:text-[#BB8506] transition-colors duration-300 px-8 py-4 rounded-lg font-medium"
                     >
                         ORDER YOUR FAVOURITE FOOD
                     </button>

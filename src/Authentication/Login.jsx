@@ -2,9 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import loginBg from '../assets/others/authentication.png';
 import loginImg from '../assets/others/authentication2.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { useAuth } from './provider/useAuth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from './Firebase/firebase.config';
 
 const Login = () => {
+    const navigate = useNavigate();
+    const { signIn } = useAuth();
+
+
     const [disabled, setDisabled] = useState(true);
     const [formData, setFormData] = useState({
         email: '',
@@ -19,30 +27,53 @@ const Login = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    // ... other imports and code remain the same ...
+
     const handleValidateCaptcha = (e) => {
         const user_captcha_value = e.target.value;
-        if (validateCaptcha(user_captcha_value)) {
-            setDisabled(false);
-        } else {
-            setDisabled(true);
+        if (user_captcha_value.length === 6) {
+            if (validateCaptcha(user_captcha_value)) {
+                setDisabled(false);
+            } else {
+                setDisabled(true);
+            }
         }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!disabled) {
-            console.log(formData);
-            // Add your login logic here
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!disabled) {
+        try {
+            const { email, password } = formData;
+            const result = await signInWithEmailAndPassword(auth, email, password);
+            
+            if (result.user) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Login successful!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                navigate('/');
+            }
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: error.message
+            });
         }
-    };
+    }
+};
 
     return (
         <div 
             className="min-h-screen flex items-center justify-center bg-cover bg-center py-8 px-4 sm:px-6 lg:px-8 bg-opacity-90"
             style={{ backgroundImage: `url(${loginBg})` }}
         >
-            <div className="max-w-4xl w-full bg-white rounded-lg shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] flex overflow-hidden">
-                <div className="hidden lg:block w-1/2 p-8">
+<div className="max-w-4xl w-full bg-white/80 backdrop-blur-sm rounded-lg shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] flex overflow-hidden">                <div className="hidden lg:block w-1/2 p-8">
                     <img 
                         src={loginImg} 
                         alt="Restaurant illustration" 

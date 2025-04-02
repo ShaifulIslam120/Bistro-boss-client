@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "firebase": "^11.6.0",
     "framer-motion": "^12.6.3",
     "react": "^18.3.1",
     "react-awesome-stars-rating": "^0.16.2",
@@ -24,6 +25,7 @@
     "react-simple-captcha": "^9.3.1",
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1",
+    "sweetalert2": "^11.17.2",
     "swiper": "^11.2.6"
   },
   "devDependencies": {
