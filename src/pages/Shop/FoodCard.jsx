@@ -3,12 +3,14 @@ import Swal from 'sweetalert2';
 import { useCart } from '../Cart/CartProvider';
 import { useAuth } from '../../Authentication/provider/useAuth';
 import useAxiosSecure from '../../Hooks/useAxiossecure';
+import { useNavigate } from 'react-router-dom';
 
 const FoodCard = ({ item }) => {
     const { name, image, price, recipe, _id } = item;
     const { addToCart } = useCart();
-    const { addToCart: addToCartDB } = useAxiosSecure();
+    const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
+    const navigate = useNavigate();
 
     const handleAddToCart = async () => {
         if (!user) {
@@ -20,6 +22,10 @@ const FoodCard = ({ item }) => {
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Login now"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate('/login');
+                }
             });
             return;
         }
@@ -34,17 +40,20 @@ const FoodCard = ({ item }) => {
                 quantity: 1
             };
 
-            await addToCartDB(cartItem);
-            addToCart(item);
+            const response = await axiosSecure.post('/carts', cartItem);
             
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Added to cart!",
-                showConfirmButton: false,
-                timer: 1500
-            });
+            if(response.data.insertedId) {
+                addToCart(item);
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Added to cart!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
         } catch (error) {
+            console.error('Add to cart error:', error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -67,8 +76,12 @@ const FoodCard = ({ item }) => {
                     </span>
                 </div>
                 <div className="p-4 text-center">
-                    <h3 className="text-xl font-semibold mb-2 hover:text-[#BB8506] transition-colors duration-300">{name}</h3>
-                    <p className="text-gray-600 text-sm mb-4">{recipe}</p>
+                    <h3 className="text-xl font-semibold mb-2 hover:text-[#BB8506] transition-colors duration-300">
+                        {name}
+                    </h3>
+                    <p className="text-gray-600 text-sm mb-4">
+                        {recipe}
+                    </p>
                     <button 
                         onClick={handleAddToCart}
                         className="bg-[#E8E8E8] hover:bg-[#1F2937] text-[#BB8506] hover:text-[#BB8506] font-medium py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95"

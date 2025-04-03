@@ -26,20 +26,20 @@ const Dashboard = () => {
         }
     }, [user, axiosSecure]);
     const adminMenuItems = [
-        { to: "/dashboard/admin-home", icon: <FaHome />, text: "Admin Home" },
-        { to: "/dashboard/add-items", icon: <FaUtensils />, text: "Add Items" },
-        { to: "/dashboard/manage-items", icon: <FaList />, text: "Manage Items" },
-        { to: "/dashboard/manage-bookings", icon: <FaBook />, text: "Manage Bookings" },
+        { to: "dashboard/admin-home", icon: <FaHome />, text: "Admin Home" },
+        { to: "dashboard/add-items", icon: <FaUtensils />, text: "Add Items" },
+        { to: "dashboard/manage-items", icon: <FaList />, text: "Manage Items" },
+        { to: "dashboard/manage-bookings", icon: <FaBook />, text: "Manage Bookings" },
         { to: "dashboard/all-users", icon: <FaUsers />, text: "All Users" },
     ];
 
     const userMenuItems = [
-        { to: "/dashboard", icon: <FaHome />, text: "User Home" },
-        { to: "/dashboard/reservation", icon: <FaUtensils />, text: "Reservation" },
-        { to: "/dashboard/Payment-history", icon: <FaList />, text: "Payment History" },
+        { to: "dashboard/user-home", icon: <FaHome />, text: "User Home" },
+        { to: "dashboard/reservation", icon: <FaUtensils />, text: "Reservation" },
+        { to: "dashboard/Payment-history", icon: <FaList />, text: "Payment History" },
         { to: "dashboard/my-cart", icon: <FaShoppingCart />, text: "My Cart" },
-        { to: "/dashboard/add-review", icon: <FaUsers />, text: "Add Review" },
-        { to: "/dashboard/my-booking", icon: <FaBook />, text: "My Booking" },
+        { to: "dashboard/add-review", icon: <FaUsers />, text: "Add Review" },
+        { to: "dashboard/my-booking", icon: <FaBook />, text: "My Booking" },
     ];
 
     const commonLinks = [

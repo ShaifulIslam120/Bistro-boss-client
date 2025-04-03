@@ -13,6 +13,7 @@ import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import Cart from "../pages/Cart/Cart";
 import Dashboard from "../Layouts/Dashbord";
 import AllUsers from "../Dashboard/AllUsers";
+import UserHome from "../Dashboard/UserHome";
   const router = createBrowserRouter([
     {
       path: "/",
@@ -66,6 +67,9 @@ import AllUsers from "../Dashboard/AllUsers";
   },{
     path:'dashboard/all-users',
     element:<AllUsers></AllUsers>
+  },{
+    path:'dashboard/user-home',
+    element:<UserHome></UserHome>
   }]
     }
   ]);

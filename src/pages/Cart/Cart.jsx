@@ -8,36 +8,48 @@ import SectionTitle from '../reusable/SectionTitle';
 
 const Cart = () => {
     const { cartItems, removeFromCart } = useCart();
-    const { removeCartItem, getCartItems } = useAxiosSecure();
+    const axiosSecure = useAxiosSecure(); // Remove destructuring
     const { user } = useAuth();
     const [dbCartItems, setDbCartItems] = useState([]);
     const total = dbCartItems.reduce((sum, item) => sum + item.price, 0);
 
     useEffect(() => {
         const loadCartItems = async () => {
-            if (user?.email) {
-                const items = await getCartItems(user.email);
-                setDbCartItems(items);
+            try {
+                if (user?.email) {
+                    const { data } = await axiosSecure.get(`/carts?email=${user.email}`);
+                    setDbCartItems(data);
+                }
+            } catch (error) {
+                console.error('Failed to load cart items:', error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Failed to load cart items",
+                    text: "Please try again later"
+                });
             }
         };
         loadCartItems();
-    }, [user]);
+    }, [user, axiosSecure]);
 
     const handleRemoveFromCart = async (id, index) => {
         try {
-            await removeCartItem(id);
-            removeFromCart(index);
-            const updatedItems = dbCartItems.filter(item => item._id !== id);
-            setDbCartItems(updatedItems);
-            
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Item removed from cart!",
-                showConfirmButton: false,
-                timer: 1500
-            });
+            const { data } = await axiosSecure.delete(`/carts/${id}`);
+            if(data.deletedCount > 0) {
+                removeFromCart(index);
+                const updatedItems = dbCartItems.filter(item => item._id !== id);
+                setDbCartItems(updatedItems);
+                
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Item removed from cart!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
         } catch (error) {
+            console.error('Failed to remove item:', error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -45,6 +57,7 @@ const Cart = () => {
             });
         }
     };
+
 
     return (
 
