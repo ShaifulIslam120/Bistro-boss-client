@@ -2,8 +2,8 @@
 
 A modern restaurant management web application built with React.js and Firebase authentication, with MongoDB for data storage.
 
-![Bistro Boss Screenshot](https://via.placeholder.com/800x400?text=Bistro+Boss+Screenshot) 
-*(Replace with actual screenshot)*
+[![Bistro Boss Screenshot](https://via.placeholder.com/800x400?text=Bistro+Boss+Screenshot) ](https://github.com/ShaifulIslam120/Bistro-boss-client/blob/1853798589586e37d84934d875c01904a65cacca/Screenshot%202025-04-04%20185016.png)
+
 
 ## 🔥 Features
 - User authentication (Login/Register) with Firebase
