@@ -1,12 +1,36 @@
-# React + Vite
+# 🍽️ Bistro Boss - Restaurant Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern restaurant management web application built with React.js and Firebase authentication, with MongoDB for data storage.
 
-Currently, two official plugins are available:
+[![Bistro Boss Screenshot](https://via.placeholder.com/800x400?text=Bistro+Boss+Screenshot) ](https://github.com/ShaifulIslam120/Bistro-boss-client/blob/1853798589586e37d84934d875c01904a65cacca/Screenshot%202025-04-04%20185016.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## 🔥 Features
+- User authentication (Login/Register) with Firebase
+- Menu browsing with categories
+- Food ordering system
+- User dashboard with order history
+- Admin panel for restaurant management
+- Responsive design for all devices
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Technologies Used
+**Frontend:**
+- React.js
+- JavaScript (ES6+)
+- React Router DOM
+- Axios for API calls
+- Tailwind CSS for styling
+- React Icons
+
+**Backend:**
+- Firebase Authentication
+- MongoDB (Database)
+- JSON Web Token (JWT) for secure login
+- Node.js & Express.js (if applicable)
+
+## 🚀 Installation & Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/bistro-boss.git
+   cd bistro-boss
