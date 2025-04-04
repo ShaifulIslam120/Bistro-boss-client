@@ -10,7 +10,7 @@ const useAdmin = () => {
     useEffect(() => {
         const checkAdmin = async () => {
             if (user?.email) {
-                const response = await axios.get(`http://localhost:4000/users/admin/${user.email}`);
+                const response = await axios.get(`https://bistro-boss-server-ruby-nu.vercel.app/users/admin/${user.email}`);
                 setIsAdmin(response.data.isAdmin);
                 setIsAdminLoading(false);
             }

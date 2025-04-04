@@ -36,7 +36,7 @@ const Login = () => {
         };
         
         try {
-            const response = await axios.post('http://localhost:4000/users', userInfo);
+            const response = await axios.post('https://bistro-boss-server-ruby-nu.vercel.app/users', userInfo);
             return response.data;
         } catch (error) {
             console.error('Error saving user:', error);

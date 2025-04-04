@@ -5,7 +5,7 @@ const PopularSection = () => {
     const [menu, setMenu] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:4000/menu')
+        fetch('https://bistro-boss-server-ruby-nu.vercel.app/menu')
             .then(res => res.json())
             .then(data => {
                 const popularItems = data.filter(item => item.category === 'popular');

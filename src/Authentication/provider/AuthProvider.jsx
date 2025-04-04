@@ -8,6 +8,7 @@ export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
     const googleProvider = new GoogleAuthProvider();
     const axiosPublic = useAxiosPublic();
 
@@ -46,14 +47,21 @@ const AuthProvider = ({ children }) => {
             try {
                 setUser(currentUser);
                 if (currentUser) {
-                    // get token and store it
                     const userInfo = { email: currentUser.email };
                     const response = await axiosPublic.post('/jwt', userInfo);
                     if (response.data.token) {
                         localStorage.setItem('access-token', response.data.token);
-                        // Check admin status after getting token
-                        const adminCheck = await axiosPublic.get(`/users/admin/${currentUser.email}`);
-                        setIsAdmin(adminCheck.data.isAdmin);
+                        try {
+                            const adminCheck = await axiosPublic.get(`/users/admin/${currentUser.email}`, {
+                                headers: {
+                                    authorization: `Bearer ${response.data.token}`
+                                }
+                            });
+                            setIsAdmin(adminCheck.data?.isAdmin || false);
+                        } catch (adminError) {
+                            console.log('Admin check error:', adminError);
+                            setIsAdmin(false);
+                        }
                     }
                 } else {
                     localStorage.removeItem('access-token');
@@ -72,6 +80,7 @@ const AuthProvider = ({ children }) => {
     const authInfo = {
         user,
         loading,
+        isAdmin,
         createUser,
         signIn,
         googleSignIn,

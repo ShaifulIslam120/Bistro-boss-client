@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosPublic = axios.create({
-    baseURL: 'http://localhost:4000'
+    baseURL: 'https://bistro-boss-server-ruby-nu.vercel.app'
 });
 
 const useAxiosPublic = () => {

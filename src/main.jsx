@@ -7,10 +7,12 @@ import router from './Routes/router.jsx'
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import AuthProvider from './Authentication/provider/AuthProvider.jsx'
 import { CartProvider } from './pages/Cart/CartProvider.jsx'
+import { ThemeProvider } from './Authentication/provider/ThemeContext.jsx'
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <ThemeProvider>
     <AuthProvider>
     <HelmetProvider>
     <CartProvider>
@@ -19,5 +21,6 @@ createRoot(document.getElementById('root')).render(
     </CartProvider>
     </HelmetProvider>
     </AuthProvider>
+    </ThemeProvider>
  </StrictMode>,
 )
